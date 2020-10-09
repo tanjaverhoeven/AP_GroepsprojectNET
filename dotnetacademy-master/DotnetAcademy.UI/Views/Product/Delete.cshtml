@@ -1,0 +1,73 @@
+﻿@model DotnetAcademy.Common.DTO.ProductViewModel
+
+@{
+    ViewBag.Title = "Product verwijderen";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Naam:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Niveau:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Type:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Categorie:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Omschrijving:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Prijs:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Verwijder" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Terug naar producten", "Index", null, new { @class = "btn btn btn-primary" })
+</div>

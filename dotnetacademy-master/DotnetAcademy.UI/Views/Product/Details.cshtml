@@ -1,0 +1,69 @@
+﻿@model DotnetAcademy.Common.DTO.ProductViewModel
+
+@{
+    ViewBag.Title = "Product details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Naam:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Niveau:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Type:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Categorie:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Omschrijving:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Prijs:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+</div>
+
+<div class="col-md-offset-2 col-md-10">
+    @Html.ActionLink("Wijzig", "Edit", new {id = Model.Id}, new {@class = "btn btn btn-primary", @style = "margin: 2px"})
+</div>
+
+<div>
+    @Html.ActionLink("Terug naar producten", "Index", null, new {@class = "btn btn btn-primary"})
+</div>

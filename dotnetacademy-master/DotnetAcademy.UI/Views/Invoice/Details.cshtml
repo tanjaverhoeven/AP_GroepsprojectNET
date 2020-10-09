@@ -1,0 +1,141 @@
+﻿@model DotnetAcademy.Common.DTO.InvoiceDetailViewModel
+<h2>Factuur @Model.Invoice.Code</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal col-xs-4">
+        <dt>
+            @Html.Label("Voornaam:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.FirstName)
+        </dd>
+        <dt>
+            @Html.Label("Achternaam:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.LastName)
+        </dd>
+        <dt>
+            @Html.Label("Email:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Email)
+        </dd>
+        <dt>
+            @Html.Label("Straat:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Street)
+        </dd>
+        <dt>
+            @Html.Label("Plaats:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.City)
+        </dd>
+        <dt>
+            @Html.Label("Postcode:")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Postal)
+        </dd>
+        <dt class="hidden-print">
+            @Html.Label("Verwijderd:")
+        </dt>
+        <dd class="hidden-print">
+            @Html.DisplayFor(model => model.Customer.Deleted)
+        </dd>
+    </dl>
+
+    <table class="table table-striped table-bordered table-hover">
+        <tr class="table-secondary">
+            <th>
+                @Html.Label("Product")
+            </th>
+            <th>
+                @Html.Label("Aantal")
+            </th>
+            <th>
+                @Html.Label("Prijs per stuk")
+            </th>
+            <th>
+                @Html.Label("Korting %")
+            </th>
+            <th>
+                @Html.Label("BTW %")
+            </th>
+
+        </tr>
+        @if (Model != null) {
+            foreach (var item in Model.DetailLines) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        € @Html.DisplayFor(modelItem => item.Product.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.VatPercentage)
+                    </td>
+
+                </tr>
+            }
+        }
+    </table>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.Label("Subtotaal:")
+            </th>
+            <td>
+                € @Html.DisplayFor(model => model.TotalAmount)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("Korting:")
+            </th>
+            <td>
+                € @Html.DisplayFor(model => model.Discount)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("BTW:")
+            </th>
+            <td>
+                € @Html.DisplayFor(model => model.VAT)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.Label("Totaal:")
+            </th>
+            <td>
+                € @Html.DisplayFor(model => model.FinalTotal)
+            </td>
+        </tr>
+    </table>
+
+</div>
+<a href="javascript:window.print()" class="hidden-print btn btn btn-primary">Afdrukken</a>
+<br />
+<br />
+
+@if (User.IsInRole("administrator")) {
+    <p class="hidden-print">
+        @Html.ActionLink("Alle facturen", "Index", "Invoice", null, new { @class = "btn btn btn-primary" })
+        @Html.ActionLink($"Facturen van {Model.Customer.FirstName}", "Customer", "Invoice", new { id = Model.Customer.Id }, new { @class = "btn btn btn-primary" })
+    </p>
+} else {
+    <p class="hidden-print">
+        @Html.ActionLink($"Terug naar facturenlijst", "MyInvoices", "Manage", null, new { @class = "btn btn btn-primary" })
+    </p>
+}

@@ -1,0 +1,46 @@
+﻿@model DotnetAcademy.Common.DTO.InvoiceViewModel
+<h2>Factuur verwijderen</h2>
+<div>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <dl class="dl-horizontal">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CustomerId)
+            @Html.HiddenFor(model => model.Code)
+            @Html.HiddenFor(model => model.Date)
+            <dt>
+                @Html.Label("Code:")
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+            <dt>
+                @Html.Label("Datum:")
+            </dt>
+            <dd>
+                @Convert.ToString(string.Format("{0:dd/MM/yyyy}", Model.Date))
+            </dd>
+            @if (Model.DetailLines.Count > 0)
+            {
+                <dt>
+                    @Html.Label("Reden voor verwijderen:")
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.DeleteMessage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DeleteMessage, "", new { @class = "text-danger" })
+                </dd>
+
+            }
+        </dl>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Verwijder factuur" class="btn btn-primary" />
+        </div>
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Terug naar facturen", "Index", "Invoice", null, new { @class = "btn btn btn-primary" })
+    </div>
+</div>

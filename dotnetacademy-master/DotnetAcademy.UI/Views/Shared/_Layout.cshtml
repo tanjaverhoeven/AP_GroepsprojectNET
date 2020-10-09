@@ -1,0 +1,66 @@
+﻿@using DotnetAcademy.Common.DTO
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - dotNET Academy</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("dotNET Academy", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Producten", "Index", "Product")</li>
+                
+                @GetTotalItemsInCart()
+                <li>
+                    <a href="@Url.Action("Index", "Cart")">
+                        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge" style="background-color: #0275d8">@ViewBag.CartCount</span>
+                    </a>
+                </li>
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</div>
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - dotNET Academy</p>
+    </footer>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+</body>
+</html>
+
+@* Get total count of items in the shopping cart and update the shopping cart badge accordingly *@
+@helper GetTotalItemsInCart() {
+    IEnumerable<ShoppingCartItemViewModel> cart = (List<ShoppingCartItemViewModel>) Session["cart"];
+    if (cart == null) {
+        ViewBag.CartCount = 0;
+    } else {
+        int counter = 0;
+
+        foreach (ShoppingCartItemViewModel cartItem in cart) {
+            counter += cartItem.Quantity;
+        }
+
+        ViewBag.CartCount = counter;
+    }
+}

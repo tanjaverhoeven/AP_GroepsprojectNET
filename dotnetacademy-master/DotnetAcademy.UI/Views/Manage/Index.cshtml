@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = $"Profiel van {ViewBag.Username}";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@TempData["StatusMessage"]</p>
+<div>
+    <h4>Mijn persoonlijk profiel</h4>
+    <hr />
+    @Html.ActionLink("Wijzig gegevens", "ChangeProfile", null, new { @class = "btn btn-primary" }) <br /><br />
+    @Html.ActionLink("Wijzig wachtwoord", "ChangePassword", null, new { @class = "btn btn-primary" }) <br /><br />
+    @Html.ActionLink("Aangekochte producten", "MyPurchasedProducts", null, new { @class = "btn btn-primary" }) <br /> <br />
+    @Html.ActionLink("Facturen", "MyInvoices", null, new { @class = "btn btn-primary" })
+</div>

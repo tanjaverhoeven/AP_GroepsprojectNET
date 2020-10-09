@@ -1,0 +1,106 @@
+﻿@model DotnetAcademy.Common.DTO.UserCustomerViewModel
+
+@{
+    ViewBag.Title = "Verwijder gebruiker";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<div>
+    <hr/>
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayName("Voornaam:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Achternaam:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Bedrijf:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Plaats:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Straat + nummer:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Street)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Postcode:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postal)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("BTW-nummer:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VatNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Gebruikersnaam:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("E-mail:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("E-mail bevestigd:")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailConfirmed)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Verwijder" class="btn btn-primary"/>
+        </div>
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Terug naar gebruikerslijst", "Index", null, new {@class = "btn btn btn-primary"})
+</div>

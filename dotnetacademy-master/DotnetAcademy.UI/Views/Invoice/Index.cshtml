@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<DotnetAcademy.Common.DTO.InvoiceViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<h2>Facturen</h2>
+<br />
+@using (Html.BeginForm("Index", "Invoice", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table table-striped table-bordered table-hover">
+    <tr class="table-secondary">
+        <th>
+            @Html.ActionLink("Klant", "Index", new { sortOrder = ViewBag.CustomerSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.CodeSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Datum", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.Label("acties")
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.FirstName)
+                @Html.DisplayFor(modelItem => item.Customer.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.Date))
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn btn-primary" })
+                @Html.ActionLink("Verwijder", "Delete", new { id = item.Id }, new { @class = "btn btn btn-primary" })
+            </td>
+        </tr>
+    }
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<div>
+    @Html.ActionLink("Terug naar beheerscherm", "Index", "Admin", null, new { @class = "btn btn btn-primary" })
+</div>

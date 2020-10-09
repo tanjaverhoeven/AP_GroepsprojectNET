@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<DotnetAcademy.Common.DTO.ProductViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Producten";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (User.IsInRole("administrator"))
+{
+    <p>
+        @Html.ActionLink("Product toevoegen", "Create", "Product", null, new { @class = "btn btn btn-primary" })
+    </p>
+}
+
+
+@using (Html.BeginForm("Index", "Product", FormMethod.Get))
+{
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Zoeken" class="btn btn btn-primary" />
+    </p>
+}
+
+<div>
+
+    @if (Model != null)
+    {
+        var count = 0;
+        foreach (var item in Model)
+        {
+            count = count + 1;
+            <div class="card" style="display:inline-block; border:solid 1px; margin: 5px; padding: 5px; border-radius: 20px; border-color:#0275d8; height:500px; width:330px">
+                <h2 class="card-title truncate">@Html.DisplayFor(modelItem => item.Name)</h2>
+                <img class="card-img-top" src="~/Content/img/dotNET-academy.jpg" alt="Card image cap">
+                <div class="card-block">
+                    <p class="card-text truncate">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </p>
+                    <p> ­€ @Html.DisplayFor(modelItem => item.Price)</p>
+                    <a href="@Url.Action("Buy", "Cart", new {id = item.Id, inShoppingCart = false})" class="btn btn btn-primary" style="margin-left: 25px">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                    @{
+                        if (User.IsInRole("administrator"))
+                        {
+                            @Html.ActionLink("Wijzig", "Edit", new { id = item.Id }, new { @class = "btn btn btn-primary", @style = "margin: 2px" })
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn btn-primary", @style = "margin: 2px" })
+                            @Html.ActionLink("Verwijder", "Delete", new { id = item.Id }, new { @class = "btn btn btn-primary", @style = "margin: 2px" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn btn-primary", @style = "margin: 2px" })
+                        }
+                    }
+                </div>
+            </div>
+            if (count %3 == 0)
+            {
+                <br />
+            }
+        }
+    }
+</div>
+<br />
+Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) van de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+

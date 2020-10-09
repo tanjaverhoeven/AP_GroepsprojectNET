@@ -1,0 +1,142 @@
+﻿@using DotnetAcademy.Common.DTO
+@model IEnumerable<DotnetAcademy.Common.DTO.ShoppingCartItemViewModel>
+
+@{
+    ViewBag.Title = "Uw winkelmand";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.Label("Naam")
+            </th>
+            <th>
+                @Html.Label("Niveau")
+            </th>
+            <th>
+                @Html.Label("Type")
+            </th>
+            <th>
+                @Html.Label("Categorie")
+            </th>
+            <th>
+                @Html.Label("Prijs")
+            </th>
+            <th>
+                @Html.Label("Hoeveelheid")
+            </th>
+            <th>
+                @Html.Label("Totaal")
+            </th>
+            <th></th>
+        </tr>
+
+        @if (Model != null) {
+            foreach (ShoppingCartItemViewModel item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductViewModel.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductViewModel.Level)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductViewModel.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductViewModel.Category)
+                    </td>
+                    <td>
+                        ­€ @Html.DisplayFor(modelItem => item.ProductViewModel.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        € @(item.ProductViewModel.Price * item.Quantity)
+                    </td>
+
+                    <td>
+                        <a href="@Url.Action("Buy", new {id = item.ProductViewModel.Id, inShoppingCart = true})" class="btn btn btn-primary">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </a> 
+                        <a href="@Url.Action("Remove", new {id = item.ProductViewModel.Id})" class="btn btn btn-primary">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </a> 
+                        @Html.ActionLink("Details", "Details", "Product", new {id = item.ProductViewModel.Id}, new {@class = "btn btn btn-primary"})
+
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <table class="table" style="width: 25%">
+        <tr>
+            <th>Subtotaal</th>
+            <td>
+                @{
+                    decimal subTotal = 0;
+                    List<ShoppingCartItemViewModel> cart = (List<ShoppingCartItemViewModel>) Session["cart"];
+
+                    if (cart != null) {
+                        subTotal = cart.Sum(item => item.ProductViewModel.Price * item.Quantity);
+                    }
+                }
+                € @subTotal.ToString("F")
+            </td>
+        </tr>
+        <tr>
+            <th>- Korting</th>
+            <td>
+                @{
+                    decimal discount = 0;
+
+                    if (subTotal >= 500) {
+                        discount = 5;
+                    } else if (subTotal >= 1000) {
+                        discount = new decimal(7.5);
+                    } else if (subTotal >= 2500) {
+                        discount = 10;
+                    }
+                }
+                € @discount.ToString("F")
+            </td>
+        </tr>
+
+        <tr>
+            <th>+ BTW</th>
+            <td>
+                @{
+                    decimal vat = 0;
+
+                    if (cart != null) {
+                        foreach (ShoppingCartItemViewModel item in cart) {
+                            decimal totalPricePerItem = item.ProductViewModel.Price * item.Quantity;
+
+                            vat += totalPricePerItem / 100 * item.ProductViewModel.VatPercentage;
+                        }
+                    }
+                }
+                € @vat.ToString("F")
+            </td>
+        </tr>
+        <tr>
+            <th>Totaal</th>
+            <td>
+                @{
+                    decimal totalPrice = subTotal - discount + vat;
+                }
+                € @totalPrice.ToString("F")
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<input class="btn btn btn-primary" type="button" value="Afrekenen" onclick="location.href = '@Url.Action("FinishOrder", "Cart")'"/> <br/>
+<span style="color: rgb(52, 226, 52);">@TempData["FinishOrderSucceeded"]</span>
+<span style="color: red;">@TempData["EmptyCartMessage"]</span>

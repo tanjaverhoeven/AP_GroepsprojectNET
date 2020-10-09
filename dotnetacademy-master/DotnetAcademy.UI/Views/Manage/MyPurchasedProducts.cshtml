@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DotnetAcademy.Common.DTO.ProductPerInvoiceViewModel>
+
+@{
+    ViewBag.Title = "Mijn aangekochte producten";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-striped table-bordered table-hover">
+    <tr class="table-secondary">
+        <th>
+            @Html.DisplayName("Naam")
+        </th>
+        <th>
+            @Html.DisplayName("Niveau")
+        </th>
+        <th>
+            @Html.DisplayName("Type")
+        </th>
+        <th>
+            @Html.DisplayName("Categorie")
+        </th>
+        <th>
+            @Html.DisplayName("Prijs per stuk")
+        </th>
+        <th>
+            @Html.DisplayName("Aantal")
+        </th>
+        <th>
+            @Html.DisplayName("Factuurcode")
+        </th>
+    </tr>
+
+    @if (Model != null) {
+        foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailLine.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailLine.Product.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailLine.Product.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailLine.Product.Category)
+                </td>
+                <td>
+                    € @Html.DisplayFor(modelItem => item.DetailLine.Product.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailLine.Amount)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Invoice.Code, "Details", "Invoice", new { id = item.Invoice.Id }, new { @class = "btn btn btn-primary" })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Terug naar profiel", "Index", null, new { @class = "btn btn btn-primary" })
+</div>

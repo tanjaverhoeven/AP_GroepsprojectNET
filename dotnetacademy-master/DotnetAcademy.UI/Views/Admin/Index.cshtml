@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Administratie";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@TempData["StatusMessage"]</p>
+<div>
+    <h4>Administrator beheerscherm</h4>
+    <hr />
+    @Html.ActionLink("Gebruikers", "Index", "Account", null, new { @class = "btn btn-primary" }) <br /> <br />
+    @Html.ActionLink("Facturen", "Index", "Invoice", null, new { @class = "btn btn-primary" }) <br /> <br />
+    @Html.ActionLink("Verkochte producten", "SoldProducts", "Product", null, new { @class = "btn btn-primary" })
+</div>
